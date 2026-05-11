@@ -1,0 +1,9 @@
+Autenticación
+Persistencia real con SQLite/PostgreSQL
+Redis para cache
+Alertas de precio
+Dark mode
+Indicadores técnicos RSI/SMA/EMA
+Noticias financieras
+Docker
+Deploy en Render/Railway
