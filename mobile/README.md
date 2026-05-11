@@ -1,50 +1,385 @@
-# Welcome to your Expo app 👋
+# MarketWatch MVP
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación mobile full-stack para búsqueda y seguimiento de acciones bursátiles, desarrollada como proyecto portfolio utilizando **React Native + Expo** para el frontend y **FastAPI** para el backend.
 
-## Get started
+La aplicación permite buscar acciones, visualizar cotizaciones en tiempo real, consultar historial de precios y administrar una lista de favoritos mediante una API REST propia integrada con **Alpha Vantage**.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+# Demo del proyecto
 
-2. Start the app
+## Funcionalidades principales
 
-   ```bash
-   npx expo start
-   ```
+- Búsqueda de acciones por símbolo o nombre.
+- Consulta de cotizaciones en tiempo real.
+- Visualización de:
+  - precio actual
+  - apertura
+  - máximo
+  - mínimo
+  - volumen
+  - variación porcentual
+- Historial reciente de precios mediante gráficos.
+- Gestión de favoritos.
+- Backend propio con FastAPI.
+- Caché en memoria para optimizar llamadas externas.
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+# Stack tecnológico
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Frontend Mobile
 
-## Get a fresh project
+- React Native
+- Expo
+- TypeScript
+- React Navigation
+- Axios
+- react-native-chart-kit
 
-When you're ready, run:
+## Backend
 
-```bash
-npm run reset-project
+- Python
+- FastAPI
+- httpx
+- Pydantic Settings
+- Alpha Vantage API
+- Caché en memoria
+
+---
+
+# Arquitectura
+
+```text
+backend/
+│
+├── app/
+│   ├── main.py
+│   ├── routes/
+│   │   └── stocks.py
+│   ├── services/
+│   ├── cache/
+│   └── core/
+│       └── config.py
+│
+└── requirements.txt
+
+mobile/
+│
+├── App.tsx
+├── package.json
+└── src/
+    ├── api/
+    │   └── stockApi.ts
+    ├── screens/
+    ├── components/
+    ├── navigation/
+    └── types/
+        └── stock.ts
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+# Funcionalidades implementadas
 
-To learn more about developing your project with Expo, look at the following resources:
+## Búsqueda de acciones
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+La aplicación permite buscar acciones utilizando:
 
-## Join the community
+- símbolo bursátil
+- nombre de empresa
 
-Join our community of developers creating universal apps.
+Ejemplos:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- AAPL
+- TSLA
+- Microsoft
+- Amazon
+
+---
+
+## Detalle de cotización
+
+Cada acción muestra:
+
+- Precio actual
+- Variación diaria
+- Apertura
+- Máximo
+- Mínimo
+- Volumen
+
+---
+
+## Historial y gráficos
+
+La aplicación consume datos históricos desde Alpha Vantage y renderiza gráficos utilizando:
+
+```bash
+react-native-chart-kit
+```
+
+---
+
+## Favoritos
+
+El usuario puede:
+
+- agregar acciones favoritas
+- eliminar favoritos
+- consultar lista de favoritos
+
+Actualmente los favoritos se almacenan en memoria.
+
+---
+
+## Caché en memoria
+
+El backend implementa una capa de caché simple para:
+
+- reducir llamadas repetidas a Alpha Vantage
+- mejorar tiempos de respuesta
+- evitar límites de rate limit de la API externa
+
+---
+
+# Instalación del proyecto
+
+# 1. Clonar repositorio
+
+```bash
+git clone <repo-url>
+
+cd marketwatch-mvp
+```
+
+---
+
+# 2. Configurar backend
+
+## Crear entorno virtual
+
+```bash
+cd backend
+
+python -m venv .venv
+```
+
+## Activar entorno virtual
+
+### Linux / Mac
+
+```bash
+source .venv/bin/activate
+```
+
+### Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+---
+
+## Instalar dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Configurar variables de entorno
+
+Crear archivo:
+
+```text
+backend/.env
+```
+
+Contenido:
+
+```env
+ALPHA_VANTAGE_API_KEY=tu_api_key
+```
+
+---
+
+## Ejecutar backend
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Servidor disponible en:
+
+```text
+http://localhost:8000
+```
+
+---
+
+# 3. Configurar aplicación mobile
+
+## Instalar dependencias
+
+```bash
+cd mobile
+
+npm install
+```
+
+---
+
+## Ejecutar aplicación
+
+```bash
+npm run start
+```
+
+También disponible:
+
+### Android
+
+```bash
+npm run android
+```
+
+### iOS
+
+```bash
+npm run ios
+```
+
+### Web
+
+```bash
+npm run web
+```
+
+---
+
+# Endpoints principales
+
+| Método | Endpoint | Descripción |
+|---|---|---|
+| GET | `/health` | Estado del backend |
+| GET | `/stocks/search?query=AAPL` | Buscar acciones |
+| GET | `/stocks/{symbol}/quote` | Obtener cotización |
+| GET | `/stocks/{symbol}/history` | Obtener historial |
+| GET | `/stocks/favorites/list` | Listar favoritos |
+| POST | `/stocks/favorites` | Agregar favorito |
+| DELETE | `/stocks/favorites/{symbol}` | Eliminar favorito |
+
+---
+
+# Ejemplo de flujo
+
+## Buscar acción
+
+```http
+GET /stocks/search?query=AAPL
+```
+
+---
+
+## Obtener cotización
+
+```http
+GET /stocks/AAPL/quote
+```
+
+---
+
+## Obtener historial
+
+```http
+GET /stocks/AAPL/history
+```
+
+---
+
+# Próximas mejoras
+
+## Backend
+
+- Persistencia con SQLite
+- PostgreSQL
+- Redis para caché
+- Docker
+- Tests automatizados
+- Deploy cloud
+
+## Frontend
+
+- Persistencia local
+- Mejoras visuales
+- Dark mode
+- Indicadores técnicos
+- Alertas de precio
+- Autenticación
+
+---
+
+# Consideraciones técnicas
+
+## Limitaciones actuales
+
+### Favoritos en memoria
+
+Actualmente los favoritos:
+
+- no persisten entre reinicios
+- no están asociados a usuarios
+
+---
+
+### URL hardcodeada
+
+La URL del backend actualmente está definida manualmente dentro de la aplicación mobile.
+
+En futuras versiones se migrará a:
+
+- variables de entorno
+- configuración por ambiente
+
+---
+
+# Objetivo del proyecto
+
+Este proyecto fue desarrollado como:
+
+- MVP funcional
+- práctica full-stack
+- proyecto portfolio
+- integración mobile + backend
+- consumo de APIs externas
+- arquitectura cliente-servidor
+
+---
+
+# Tecnologías utilizadas
+
+| Tecnología | Uso |
+|---|---|
+| React Native | Frontend mobile |
+| Expo | Runtime mobile |
+| TypeScript | Tipado frontend |
+| FastAPI | Backend REST |
+| Python | Lógica backend |
+| Axios | Cliente HTTP |
+| Alpha Vantage | Datos bursátiles |
+| Chart Kit | Gráficos |
+| httpx | Requests backend |
+
+---
+
+# Autor
+
+Desarrollado por Franco Sassi.
+
+---
+
+# Descripción resumida para portfolio
+
+> MarketWatch MVP es una aplicación mobile full-stack para seguimiento de acciones bursátiles desarrollada con React Native, Expo y FastAPI. Integra Alpha Vantage para obtener datos financieros en tiempo real e incluye búsqueda de acciones, detalle de cotización, gráficos históricos, favoritos y caché en memoria para optimizar llamadas externas.

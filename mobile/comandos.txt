@@ -1,0 +1,7 @@
+###Backend
+
+python -m venv venv
+
+python -m venv venv
+
+uvicorn app.main:app --reload
