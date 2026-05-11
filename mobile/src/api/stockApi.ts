@@ -5,8 +5,8 @@ import {
   StockSearchItem,
 } from "../types/stock";
 
-const API_BASE_URL = "http://127.0.0.1:8000";
-
+const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
 export const stockApi = {
   search: async (query: string): Promise<StockSearchItem[]> => {
     const response = await axios.get(`${API_BASE_URL}/stocks/search`, {
