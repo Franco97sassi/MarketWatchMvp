@@ -1,4 +1,4 @@
-import axios from "axios";
+import { create } from "axios";
 import {
   StockHistoryItem,
   StockQuote,
@@ -7,9 +7,16 @@ import {
 
 const API_BASE_URL =
   process.env.EXPO_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+
+const client = create({
+  baseURL: API_BASE_URL,
+  timeout: 12_000,
+  headers: { Accept: "application/json" },
+});
+
 export const stockApi = {
   search: async (query: string): Promise<StockSearchItem[]> => {
-    const response = await axios.get(`${API_BASE_URL}/stocks/search`, {
+    const response = await client.get("/stocks/search", {
       params: { query },
     });
 
@@ -17,22 +24,22 @@ export const stockApi = {
   },
 
   getQuote: async (symbol: string): Promise<StockQuote> => {
-    const response = await axios.get(`${API_BASE_URL}/stocks/${symbol}/quote`);
+    const response = await client.get(`/stocks/${encodeURIComponent(symbol)}/quote`);
     return response.data;
   },
 
   getHistory: async (symbol: string): Promise<StockHistoryItem[]> => {
-    const response = await axios.get(`${API_BASE_URL}/stocks/${symbol}/history`);
+    const response = await client.get(`/stocks/${encodeURIComponent(symbol)}/history`);
     return response.data;
   },
 
   getFavorites: async (): Promise<string[]> => {
-    const response = await axios.get(`${API_BASE_URL}/stocks/favorites/list`);
+    const response = await client.get("/stocks/favorites/list");
     return response.data;
   },
 
   addFavorite: async (symbol: string): Promise<string[]> => {
-    const response = await axios.post(`${API_BASE_URL}/stocks/favorites`, {
+    const response = await client.post("/stocks/favorites", {
       symbol,
     });
 
@@ -40,9 +47,7 @@ export const stockApi = {
   },
 
   removeFavorite: async (symbol: string): Promise<string[]> => {
-    const response = await axios.delete(
-      `${API_BASE_URL}/stocks/favorites/${symbol}`
-    );
+    const response = await client.delete(`/stocks/favorites/${encodeURIComponent(symbol)}`);
 
     return response.data.favorites;
   },

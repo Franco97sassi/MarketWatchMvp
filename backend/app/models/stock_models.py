@@ -1,5 +1,4 @@
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class StockQuote(BaseModel):
@@ -31,4 +30,15 @@ class StockSearchItem(BaseModel):
 
 
 class FavoriteStock(BaseModel):
-    symbol: str
+    model_config = ConfigDict(str_strip_whitespace=True)
+    symbol: str = Field(min_length=1, max_length=15, pattern=r"^[A-Za-z0-9.\-]+$")
+
+    @field_validator("symbol")
+    @classmethod
+    def normalize_symbol(cls, value: str) -> str:
+        return value.upper()
+
+
+class FavoritesResponse(BaseModel):
+    message: str
+    favorites: list[str]

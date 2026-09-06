@@ -4,24 +4,33 @@ from app.core.config import settings
 from app.cache.memory_cache import memory_cache
 
 
+class AlphaVantageError(Exception):
+    def __init__(self, message: str, status_code: int = 422):
+        super().__init__(message)
+        self.status_code = status_code
+
+
 class AlphaVantageService:
-    async def _get(self, params: dict):
-        params["apikey"] = settings.alpha_vantage_api_key
+    async def _get(self, params: dict[str, str]):
+        request_params = {**params, "apikey": settings.alpha_vantage_api_key}
 
         async with httpx.AsyncClient(timeout=15) as client:
             response = await client.get(
                 settings.alpha_vantage_base_url,
-                params=params
+                params=request_params
             )
 
         response.raise_for_status()
         data = response.json()
 
         if "Note" in data:
-            raise Exception("Límite de requests alcanzado en Alpha Vantage.")
+            raise AlphaVantageError("Límite temporal del proveedor alcanzado.", 429)
 
         if "Error Message" in data:
-            raise Exception("Símbolo inválido o error en Alpha Vantage.")
+            raise AlphaVantageError("El símbolo solicitado no es válido.")
+
+        if "Information" in data:
+            raise AlphaVantageError("El proveedor no pudo procesar la solicitud.", 429)
 
         return data
 
@@ -29,7 +38,7 @@ class AlphaVantageService:
         cache_key = f"search:{keywords.upper()}"
         cached = memory_cache.get(cache_key)
 
-        if cached:
+        if cached is not None:
             return cached
 
         data = await self._get({
@@ -63,7 +72,7 @@ class AlphaVantageService:
         cache_key = f"quote:{symbol}"
         cached = memory_cache.get(cache_key)
 
-        if cached:
+        if cached is not None:
             return cached
 
         data = await self._get({
@@ -74,7 +83,7 @@ class AlphaVantageService:
         quote = data.get("Global Quote")
 
         if not quote:
-            raise Exception("No se encontró cotización para ese símbolo.")
+            raise AlphaVantageError("No se encontró cotización para ese símbolo.", 404)
 
         result = {
             "symbol": quote.get("01. symbol"),
@@ -100,7 +109,7 @@ class AlphaVantageService:
         cache_key = f"history:{symbol}"
         cached = memory_cache.get(cache_key)
 
-        if cached:
+        if cached is not None:
             return cached
 
         data = await self._get({
@@ -112,7 +121,7 @@ class AlphaVantageService:
         time_series = data.get("Time Series (Daily)")
 
         if not time_series:
-            raise Exception("No se encontró historial para ese símbolo.")
+            raise AlphaVantageError("No se encontró historial para ese símbolo.", 404)
 
         result = []
 

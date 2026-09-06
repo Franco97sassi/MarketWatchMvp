@@ -1,0 +1,8 @@
+# Normalize source and configuration files so code-review tools always render them as text.
+*.py text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf diff
+*.example text eol=lf
