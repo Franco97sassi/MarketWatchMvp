@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { isAxiosError } from "axios";
 
 import { RootStackParamList } from "../../App";
 import { stockApi } from "../api/stockApi";
@@ -27,24 +28,22 @@ export default function StockDetailScreen({ route }: Props) {
   const [favoriteMessage, setFavoriteMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
       setErrorMessage("");
 
-      const quoteResult = await stockApi.getQuote(symbol);
-      const historyResult = await stockApi.getHistory(symbol);
+      const [quoteResult, historyResult] = await Promise.all([
+        stockApi.getQuote(symbol),
+        stockApi.getHistory(symbol),
+      ]);
 
       setQuote(quoteResult);
       setHistory(historyResult);
-    } catch (error: any) {
-      console.log("ERROR DETALLE:");
-      console.log(error);
-
-      if (error.response) {
-        console.log(error.response.data);
+    } catch (error: unknown) {
+      if (isAxiosError<{ detail?: string }>(error)) {
         setErrorMessage(
-          error.response.data?.detail || "No se pudieron cargar los datos."
+          error.response?.data?.detail || "No se pudieron cargar los datos."
         );
       } else {
         setErrorMessage("No se pudieron cargar los datos.");
@@ -52,7 +51,7 @@ export default function StockDetailScreen({ route }: Props) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [symbol]);
 
   const addFavorite = async () => {
     try {
@@ -65,7 +64,7 @@ export default function StockDetailScreen({ route }: Props) {
 
   useEffect(() => {
     loadData();
-  }, [symbol]);
+  }, [loadData]);
 
   if (loading) {
     return (
