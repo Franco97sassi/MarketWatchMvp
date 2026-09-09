@@ -1,4 +1,24 @@
-# MarketWatch MVP
+# Nexus Market mobile
+
+Aplicación actualizada a **Expo SDK 55**. Después de descargar el proyecto, instalá
+las dependencias compatibles y limpiá la caché de Metro:
+
+```bash
+rm -rf node_modules
+npm install
+npx expo install --fix
+npx expo start --clear
+```
+
+Iniciá el backend en el puerto `8000` antes de buscar acciones. Expo Go detecta
+automáticamente la IP del equipo que sirve Metro. La URL también se puede definir
+de forma explícita para un teléfono físico:
+
+```bash
+EXPO_PUBLIC_API_URL=http://192.168.1.10:8000 npx expo start --clear
+```
+
+## Descripción
 
 Aplicación mobile full-stack para búsqueda y seguimiento de acciones bursátiles, desarrollada como proyecto portfolio utilizando **React Native + Expo** para el frontend y **FastAPI** para el backend.
 

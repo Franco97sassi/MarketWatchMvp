@@ -17,11 +17,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const theme: Theme = {
   dark: false,
   colors: {
-    primary: "#7C5CFC",
-    background: "#F7F8FC",
-    card: "#FFFFFF",
-    text: "#171A2B",
-    border: "#E9EAF2",
+    primary: "#21E6A7",
+    background: "#07111F",
+    card: "#0D1B2B",
+    text: "#F4F8FC",
+    border: "#1A2B3E",
     notification: "#F05D5E",
   },
   fonts: {
@@ -35,7 +35,7 @@ const theme: Theme = {
 export default function App() {
   return (
     <NavigationContainer theme={theme}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <Stack.Navigator
         screenOptions={{
           headerShadowVisible: false,

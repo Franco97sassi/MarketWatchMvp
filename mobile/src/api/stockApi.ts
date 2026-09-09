@@ -1,12 +1,15 @@
 import { create } from "axios";
+import Constants from "expo-constants";
+import { Platform } from "react-native";
 import {
   StockHistoryItem,
   StockQuote,
   StockSearchItem,
 } from "../types/stock";
 
-const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+const developmentHost = Constants.expoConfig?.hostUri?.split(":")[0];
+const defaultHost = Platform.OS === "web" ? "127.0.0.1" : developmentHost ?? "10.0.2.2";
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? `http://${defaultHost}:8000`;
 
 const client = create({
   baseURL: API_BASE_URL,
