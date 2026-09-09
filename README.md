@@ -2,6 +2,33 @@
 
 Aplicación full-stack de seguimiento bursátil creada con **React Native/Expo**, **TypeScript** y **FastAPI**. El proyecto prioriza una experiencia mobile cuidada, contratos tipados, manejo explícito de errores y una arquitectura fácil de extender.
 
+## Demo
+
+[![Reproducir demo de MarketWatch](docs/media/screenshots/home.png)](docs/media/videos/marketwatch-demo.mp4)
+
+▶️ **[Ver el video de demostración](docs/media/videos/marketwatch-demo.mp4)**
+
+> La reproducción depende del visor del navegador. Si no comienza al abrir el enlace, descargá el archivo MP4 desde esa página.
+
+## Capturas de pantalla
+
+<table>
+  <tr>
+    <th>Pantalla principal</th>
+    <th>Detalle de una acción</th>
+  </tr>
+  <tr>
+    <td><img src="docs/media/screenshots/home.png" alt="Pantalla principal con buscador y acciones populares" /></td>
+    <td><img src="docs/media/screenshots/stock-detail.png" alt="Detalle de MSFT con cotización, resumen diario y gráfico histórico" /></td>
+  </tr>
+  <tr>
+    <th colspan="2">Watchlist</th>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="docs/media/screenshots/watchlist.png" alt="Watchlist con una acción guardada" /></td>
+  </tr>
+</table>
+
 ## Funcionalidades
 
 - Búsqueda por ticker o nombre con accesos rápidos a símbolos populares.
