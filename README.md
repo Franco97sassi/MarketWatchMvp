@@ -65,11 +65,15 @@ La API queda disponible en `http://localhost:8000`; Swagger UI en `http://localh
 
 ```bash
 cd mobile
-npm ci
+npm install
+npx expo install --fix
 EXPO_PUBLIC_API_URL=http://localhost:8000 npm run web
 ```
 
 Para un dispositivo físico, `EXPO_PUBLIC_API_URL` debe apuntar a la IP de la computadora en la red local.
+La aplicación usa Expo SDK 57, por lo que es compatible con la versión actual de
+Expo Go. `expo install --fix` alinea las dependencias nativas con ese SDK después
+de instalar o actualizar los paquetes.
 
 ## Calidad
 
