@@ -4,11 +4,11 @@ Aplicación full-stack de seguimiento bursátil creada con **React Native/Expo**
 
 ## Demo
 
-[![Reproducir demo de MarketWatch](docs/media/screenshots/home.png)](docs/media/videos/marketwatch-demo.mp4)
+[![Reproducir demo de MarketWatch](docs/media/screenshots/home.png)](https://drive.google.com/file/d/1OGU_222K_QqbgTER9ki1jvFaxPXdySF2/view?usp=sharing)
 
-▶️ **[Ver el video de demostración](docs/media/videos/marketwatch-demo.mp4)**
+▶️ **[Ver el video de demostración](https://drive.google.com/file/d/1OGU_222K_QqbgTER9ki1jvFaxPXdySF2/view?usp=sharing)**
 
-> La reproducción depende del visor del navegador. Si no comienza al abrir el enlace, descargá el archivo MP4 desde esa página.
+> El video se abre en Google Drive para facilitar su reproducción.
 
 ## Capturas de pantalla
 
