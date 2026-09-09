@@ -10,7 +10,10 @@ Aplicación full-stack de seguimiento bursátil creada con **React Native/Expo**
 - Estados de carga, vacío, error y reintento; navegación y controles accesibles.
 - Caché TTL thread-safe para reducir latencia y consumo del proveedor.
 - Validación de entrada, errores HTTP semánticos, CORS configurable y documentación OpenAPI.
-- Suite de pruebas de integración para health check, validación y watchlist.
+- Suite de pruebas con mocks para health check, validación, watchlist, caché y las
+  respuestas del proveedor externo (cotización, búsqueda, histórico y errores).
+- Integración continua en GitHub Actions para ejecutar pruebas, lint y typecheck
+  en cada push y pull request.
 
 ## Arquitectura
 
@@ -27,6 +30,10 @@ mobile/                         backend/
 
 El cliente concentra el transporte HTTP en un único módulo con base URL por ambiente, timeout y codificación segura de parámetros. El backend separa rutas, modelos, configuración, caché y acceso al proveedor externo.
 
+La interfaz comparte un sistema visual de colores, superficies y elevación entre
+búsqueda, detalle y favoritos. Las operaciones remotas ofrecen estados explícitos
+de carga y error, acciones deshabilitadas durante el envío y reintentos accesibles.
+
 ## Puesta en marcha
 
 ### API
@@ -40,6 +47,17 @@ cp .env.example .env
 # Completar ALPHA_VANTAGE_API_KEY en .env
 uvicorn app.main:app --reload
 ```
+
+### Verificaciones de calidad
+
+```bash
+cd backend && python -m pytest -q
+cd mobile && npm run typecheck && npm run lint
+```
+
+El workflow `.github/workflows/ci.yml` ejecuta las mismas verificaciones en un
+entorno limpio. No necesita una API key real: la suite sustituye las respuestas
+de Alpha Vantage con mocks deterministas y nunca consume su cuota.
 
 La API queda disponible en `http://localhost:8000`; Swagger UI en `http://localhost:8000/docs`.
 
