@@ -1,7 +1,13 @@
 import httpx
 from fastapi import APIRouter, HTTPException, Query, status
 
-from app.models.stock_models import FavoriteStock, FavoritesResponse
+from app.models.stock_models import (
+    FavoriteStock,
+    FavoritesResponse,
+    StockHistoryItem,
+    StockQuote,
+    StockSearchItem,
+)
 from app.services.alpha_vantage_service import AlphaVantageError, alpha_vantage_service
 
 router = APIRouter(prefix="/stocks", tags=["Stocks"])
@@ -16,7 +22,7 @@ def upstream_error(error: Exception) -> HTTPException:
     return HTTPException(status_code=500, detail="Ocurrió un error inesperado.")
 
 
-@router.get("/search")
+@router.get("/search", response_model=list[StockSearchItem])
 async def search_stocks(query: str = Query(min_length=1, max_length=80)):
     try:
         return await alpha_vantage_service.search_symbol(query.strip())
@@ -44,7 +50,7 @@ async def remove_favorite(symbol: str) -> FavoritesResponse:
     return FavoritesResponse(message="Eliminado de favoritos", favorites=favorites.copy())
 
 
-@router.get("/{symbol}/quote")
+@router.get("/{symbol}/quote", response_model=StockQuote)
 async def get_stock_quote(symbol: str):
     try:
         return await alpha_vantage_service.get_quote(symbol)
@@ -52,7 +58,7 @@ async def get_stock_quote(symbol: str):
         raise upstream_error(error) from error
 
 
-@router.get("/{symbol}/history")
+@router.get("/{symbol}/history", response_model=list[StockHistoryItem])
 async def get_stock_history(symbol: str):
     try:
         return await alpha_vantage_service.get_daily_history(symbol)
