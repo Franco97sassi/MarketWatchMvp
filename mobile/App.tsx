@@ -17,12 +17,12 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const theme: Theme = {
   dark: false,
   colors: {
-    primary: "#21E6A7",
-    background: "#07111F",
-    card: "#0D1B2B",
-    text: "#F4F8FC",
-    border: "#1A2B3E",
-    notification: "#F05D5E",
+    primary: "#C8FF38",
+    background: "#080A0B",
+    card: "#111416",
+    text: "#F5F7F3",
+    border: "#24292A",
+    notification: "#FF5B68",
   },
   fonts: {
     regular: { fontFamily: "System", fontWeight: "400" },
@@ -40,7 +40,8 @@ export default function App() {
         screenOptions={{
           headerShadowVisible: false,
           headerStyle: { backgroundColor: theme.colors.background },
-          headerTitleStyle: { fontWeight: "700" },
+          headerTitleStyle: { fontWeight: "800", fontSize: 16 },
+          headerTintColor: theme.colors.text,
           contentStyle: { backgroundColor: theme.colors.background },
         }}
       >

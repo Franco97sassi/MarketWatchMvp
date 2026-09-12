@@ -104,7 +104,7 @@ export default function StockDetailScreen({ route }: Props) {
           width={Dimensions.get("window").width - 76}
           height={220}
           yAxisLabel="$"
-          chartConfig={{ backgroundGradientFrom: colors.surface, backgroundGradientTo: colors.surface, decimalPlaces: 0, color: (opacity = 1) => `rgba(124, 92, 252, ${opacity})`, labelColor: () => colors.textMuted, propsForDots: { r: "3", strokeWidth: "2", stroke: colors.surface }, propsForBackgroundLines: { stroke: colors.border } }}
+          chartConfig={{ backgroundGradientFrom: colors.surface, backgroundGradientTo: colors.surface, decimalPlaces: 0, color: (opacity = 1) => `rgba(200, 255, 56, ${opacity})`, labelColor: () => colors.textMuted, propsForDots: { r: "3", strokeWidth: "2", stroke: colors.surface }, propsForBackgroundLines: { stroke: colors.border } }}
           bezier
           style={styles.chart}
         /> : <Text style={styles.noHistory}>No hay historial suficiente para mostrar el gráfico.</Text>}
